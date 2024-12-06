@@ -1,6 +1,5 @@
 import app from "./app.js";
-import http from 'http'; // Correct
-
+import http from "http"; // Correct
 
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);

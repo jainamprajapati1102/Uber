@@ -1,12 +1,18 @@
+import dotenv from "dotenv";
+dotenv.config(); // This loads the variables from the .env file
 import express from "express";
 import db from "./db/db.js";
-import { configDotenv } from "dotenv";
+import cookieParser from "cookie-parser";
 import cors from "cors";
-configDotenv();
+import userRoutes from "./routes/user.routes.js";
+
 const app = express();
+app.use(cookieParser());
+app.use(express.json()); // Parses JSON payloads
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+app.use("/user", userRoutes);
 export default app;

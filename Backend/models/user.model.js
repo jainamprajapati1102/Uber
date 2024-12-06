@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { bcrypt } from "bcrypt";
-import { jwt } from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const userSchema = mongoose.Schema({
   fullname: {
     firstname: {
@@ -12,21 +12,22 @@ const userSchema = mongoose.Schema({
     },
   },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  soketId: { type: String, required: true },
+  password: { type: String, required: true, select: false },
+  soketId: { type: String },
 });
 
-userSchema.methods.generateAuthToken = async = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
-  return token;
+userSchema.methods.generateAuthToken = async function () {
+  return jwt.sign({ _id: this._id }, "ubersecretjainam", { expiresIn: "24h" });
 };
 
-userSchema.methods.comparerPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function (password) {
+  const match = await bcrypt.compare(password, this.password);
+  return match;
 };
 
 userSchema.statics.hashPassword = async function (password) {
-  return await bcrypt.hash(password, 10);
+  const hash = await bcrypt.hash(password, 10);
+  return hash;
 };
-
-export default userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.model("User", userSchema);
+export default userModel;

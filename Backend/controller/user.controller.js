@@ -55,9 +55,6 @@ export const logoutUser = async (req, res) => {
   const token =
     req.cookies.token ||
     (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-  console.log("controller token: " + token);
-
   await BlacklistToken.create({ token });
-
   res.json({ message: "User logged out" });
 };

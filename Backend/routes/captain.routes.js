@@ -1,12 +1,13 @@
 import express from "express";
 import { body } from "express-validator";
 import {
-  registerUser,
-  loginUser,
-  getUserProfile,
-  logoutUser,
-} from "../controller/user.controller.js";
-import { authUser } from "../middleware/user.auth.middleware.js";
+  captProfile,
+  loginCaptain,
+  logoutCaptain,
+  registerCaptain,
+} from "../controller/captain.controller.js";
+import { authCapt } from "../middleware/capt.auth.middleware.js";
+
 const router = express.Router();
 router.post(
   "/register",
@@ -33,8 +34,20 @@ router.post(
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long")
       .trim(),
+    body("vehicle.color")
+      .isLength({ min: 3 })
+      .withMessage("Color must be at least 3 characters long"),
+    body("vehicle.plate")
+      .isLength({ min: 3 })
+      .withMessage("Plate No. must be at least 3 characters long"),
+    body("vehicle.capacity")
+      .isLength({ min: 1 })
+      .withMessage("Capacity of vehicle must be at least 1 "),
+    body("vehicle.vehicleType")
+      .isIn(["car", "motorcycle", "auto"])
+      .withMessage("Invalid vehicle type"),
   ],
-  registerUser
+  registerCaptain
 );
 
 router.post(
@@ -45,9 +58,9 @@ router.post(
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
   ],
-  loginUser
+  loginCaptain
 );
 
-router.get("/profile", authUser, getUserProfile);
-router.get("/logout", authUser, logoutUser,authUser);
+router.get("/profile", authCapt, captProfile);
+router.get("/logout", authCapt, logoutCaptain);
 export default router;

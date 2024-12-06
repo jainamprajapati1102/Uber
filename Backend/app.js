@@ -5,7 +5,7 @@ import db from "./db/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
-
+import captainRoutes from "./routes/captain.routes.js";
 const app = express();
 app.use(cookieParser());
 app.use(express.json()); // Parses JSON payloads
@@ -15,4 +15,5 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.use("/user", userRoutes);
+app.use("/captain", captainRoutes);
 export default app;

@@ -8,7 +8,6 @@ export const registerCaptain = async function (req, res) {
     const errors = validationResult(req);
     const { fullname, email, password, vehicle } = req.body;
     if (!errors.isEmpty()) {
-      console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -23,10 +22,12 @@ export const registerCaptain = async function (req, res) {
       capacity: vehicle.capacity,
       vehicleType: vehicle.vehicleType,
     });
-    const token = captain.generateAuthToken();
-    res.status(201).json({ captain });
+    const token = await captain.generateAuthToken();
+    res.status(201).json({ token, captain });
   } catch (error) {
-    res.json(error.message);
+    console.log(error);
+
+    res.json({ error: error.message });
   }
 };
 
@@ -35,32 +36,28 @@ export const loginCaptain = async function (req, res) {
     const { password, email } = req.body;
     const captain = await captainModel.findOne({ email }).select("+password");
     if (!captain) {
+      console.log("cap not find");
+
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    console.log("login body", req.body);
-
     const isMatch = await captain.comparePassword(password);
-    console.log("match", isMatch);
-
     if (!isMatch) {
+      console.log("pass not match");
+
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = await captain.generateAuthToken();
-    res.cookie("cap_token", token);
-    res.status(200).json({ token, message: "you are logedin" });
+    // res.cookie("cap_token", token);
+    res.status(200).json({ token, captain, message: "you are logedin" });
   } catch (error) {
-    console.log(error);
     res.json(error.message);
   }
 };
 
 export const captProfile = (req, res) => {
   try {
-    console.log("controller", req.captain);
-
     res.status(200).json({ captain: req.captain });
   } catch (error) {
-    console.log(error);
     res.status(401).json(error.message);
   }
 };

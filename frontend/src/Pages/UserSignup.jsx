@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/userContext";
 const UserSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,15 +10,33 @@ const UserSignup = () => {
   const [lastname, setLastName] = useState("");
   const [mobile, setMobile] = useState("");
 
-  const submitHandler = (e) => {
+  const { user, setUser } = React.useContext(UserDataContext);
+  const navigate = useNavigate();
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      email: email,
-      password: password,
-      firstname: firstname,
-      lastname: lastname,
-      mobile: mobile,
-    });
+    try {
+      const newUser = {
+        email: email,
+        password: password,
+        fullname: {
+          firstname: firstname,
+          lastname: lastname,
+        },
+        mobile: mobile,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/register`,
+        newUser
+      );
+      if (response.status === 201) {
+        const data = response.data;
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
     setEmail("");
     setPassword("");
     setFirstName("");
@@ -47,6 +66,7 @@ const UserSignup = () => {
               value={firstname}
               onChange={(e) => setFirstName(e.target.value)}
               required
+              name="firstname"
               className="bg-gray-100 rounded-lg px-4 py-3 border w-1/2  text-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
               placeholder="First Name"
             />
@@ -55,6 +75,7 @@ const UserSignup = () => {
               value={lastname}
               onChange={(e) => setLastName(e.target.value)}
               required
+              name="lastname"
               className="bg-gray-100 rounded-lg px-4 py-3 border w-1/2 text-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
               placeholder="Last Name"
             />
@@ -65,12 +86,14 @@ const UserSignup = () => {
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
             required
+            name="mobile"
             className="bg-gray-100 rounded-lg px-4 py-3 border w-full text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
             placeholder="123456789"
           />
           <h3 className="text-base font-medium mb-2">What's your email</h3>
           <input
             type="email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -80,6 +103,7 @@ const UserSignup = () => {
           <h3 className="text-base font-medium mb-2">Enter password</h3>
           <input
             type="password"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

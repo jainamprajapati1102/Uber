@@ -1,4 +1,3 @@
-
 # User API Documentation
 
 ## Overview
@@ -94,3 +93,5 @@ This API provides authentication and user management functionality, including us
    npm start
    ```
 3. Use a tool like **Postman** or **cURL** to test the endpoints.
+
+

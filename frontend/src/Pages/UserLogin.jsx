@@ -1,17 +1,38 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import React, { createContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState("");
 
-  const submitHandler = (e) => {
+  const { user, setUser } = React.useContext(UserDataContext);
+  const navigate = useNavigate();
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      email: email,
-      password: password,
-    });
+    // setUserData({
+    //   email: email,
+    //   password: password,
+    // });
+    try {
+      const newUser = {
+        email: email,
+        password: password,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/login`,
+        newUser
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log("error frm user login", error);
+    }
     setEmail("");
     setPassword("");
   };
@@ -32,9 +53,7 @@ const UserLogin = () => {
               alt="Logo"
             />
           </div>
-          <h3 className="text-lg font-medium mb-2">
-            What's your email
-          </h3>
+          <h3 className="text-lg font-medium mb-2">What's your email</h3>
           <input
             type="email"
             value={email}

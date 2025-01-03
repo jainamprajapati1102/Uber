@@ -13,6 +13,8 @@ import UserLogout from "./Pages/UserLogout";
 import CaptainHome from "./Pages/CaptainHome";
 import CaptainProtectWrapper from "./Pages/CaptainProtectWrapper";
 import Riding from "./Pages/Riding";
+import CaptainRiding from "./Pages/CaptainRiding";
+import "remixicon/fonts/remixicon.css";
 const App = () => {
   return (
     <div>
@@ -24,15 +26,9 @@ const App = () => {
             <Route path="/signup" element={<UserSignup />} />
             <Route path="/riding" element={<Riding />} />
 
-            <Route
-              path="/captain-signup"
-              element={
-                // <UserProtectWrapper>
-                <CaptainSingUp />
-                // </UserProtectWrapper>
-              }
-            />
-            <Route path="/captain-login" element={<CaptainLogin />} />
+            <Route path="/captain-signup" element={<CaptainSingUp />} />
+            <Route path="/captain-signin" element={<CaptainLogin />} />
+            <Route path="/captain-riding" element={<CaptainRiding />} />
             <Route
               path="/home"
               element={

@@ -46,7 +46,7 @@ export const ConfirmRide = (props) => {
             props.setVehicleFound(true);
             props.setConfirmRidePanel(false);
             props.setVehiclePanel(false);
-        }} className="w-full bg-green-600 p-2 rounded-lg font-semibold mt-5 text-white">
+        }} className="w-full bg-green-600 text-lg p-2 rounded-lg font-semibold mt-5 text-white">
           Confirm
         </button>
       </div>

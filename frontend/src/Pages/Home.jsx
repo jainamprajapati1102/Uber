@@ -224,7 +224,7 @@ const Home = () => {
         </div>
         <div
           ref={waitingForDriverRef}
-          className="fixed z-10 px-3 py-8  bg-white w-full  bottom-0"
+          className="fixed z-10 px-3 py-8 translate-y-full bg-white w-full  bottom-0"
         >
           <WaitingForDriver   setWaitingForDriverPanel={setWaitingForDriverPanel}/>
         </div>

@@ -6,8 +6,6 @@ export const authCapt = async (req, res, next) => {
     const token =
       req.cookies.cap_token ||
       (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-    console.log("middle token", token);
-
     const isBlacklisted = await BlacklistToken.findOne({ token });
 
     if (!token) {
@@ -19,10 +17,7 @@ export const authCapt = async (req, res, next) => {
     }
 
     const varifyCapt = jwt.verify(token, "ubersecretjainam");
-
     const captain = await captainModel.findById({ _id: varifyCapt._id });
-    console.log("middle", captain);
-
     req.captain = captain;
     return next();
   } catch (error) {

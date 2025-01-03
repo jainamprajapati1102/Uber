@@ -25,8 +25,6 @@ export const registerCaptain = async function (req, res) {
     const token = await captain.generateAuthToken();
     res.status(201).json({ token, captain });
   } catch (error) {
-    console.log(error);
-
     res.json({ error: error.message });
   }
 };
@@ -36,14 +34,10 @@ export const loginCaptain = async function (req, res) {
     const { password, email } = req.body;
     const captain = await captainModel.findOne({ email }).select("+password");
     if (!captain) {
-      console.log("cap not find");
-
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const isMatch = await captain.comparePassword(password);
     if (!isMatch) {
-      console.log("pass not match");
-
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = await captain.generateAuthToken();

@@ -13,7 +13,6 @@ export const authUser = async (req, res, next) => {
   }
 
   const isBlacklisted = await BlacklistToken.findOne({ token });
-console.log(isBlacklisted);
 
   if (isBlacklisted) {
     return res.status(401).json({ message: "unauthorized black" });

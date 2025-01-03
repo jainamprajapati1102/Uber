@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
 import captainRoutes from "./routes/captain.routes.js";
+import maps from '../Backend/routes/map.routes.js'
 const app = express();
 app.use(cookieParser());
 app.use(express.json()); // Parses JSON payloads
@@ -16,4 +17,5 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userRoutes);
 app.use("/captain", captainRoutes);
+app.use("/maps", maps);
 export default app;

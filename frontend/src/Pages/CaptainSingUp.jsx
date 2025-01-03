@@ -214,7 +214,7 @@ const CaptainSingUp = () => {
         </form>
         <p className="text-center mt-4 text-sm">
           Already have a account?{" "}
-          <Link to="/captain-login" className="text-blue-600 hover:underline">
+          <Link to="/captain-signin" className="text-blue-600 hover:underline">
             Login here
           </Link>
         </p>

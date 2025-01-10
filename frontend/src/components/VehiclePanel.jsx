@@ -1,6 +1,6 @@
 import React from "react";
 
-export const VehiclePanel = (props ,idx) => {
+export const VehiclePanel = (props, idx) => {
   return (
     <div>
       {" "}
@@ -16,7 +16,8 @@ export const VehiclePanel = (props ,idx) => {
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
-        //   props.setVehiclePanel(false);
+          props.selectVehicle("car");
+          //   props.setVehiclePanel(false);
         }}
         className="flex w-full p-3 items-center mb-2 border-2 hover:border-black  border-gray-500 rounded-xl justify-between"
       >
@@ -32,16 +33,19 @@ export const VehiclePanel = (props ,idx) => {
             </span>
             4
           </h4>
-          <h5 className="font-medium text-sm">2 mins away</h5>
+          <h5 className="font-medium text-sm">
+            2 mins away
+          </h5>
           <p className="font-normal text-xs text-gray-600">
             Afforable, Compact Ride
           </p>
         </div>
-        <h2 className="text-lg font-semibold">₹193.20</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.car}</h2>
       </div>
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
+          props.selectVehicle("moto");
         }}
         className="flex w-full p-3 items-center mb-2 border-2 hover:border-black  border-gray-500 rounded-xl justify-between"
       >
@@ -62,11 +66,12 @@ export const VehiclePanel = (props ,idx) => {
             Afforable, MotoCycle Rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">₹65</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.moto}</h2>
       </div>
       <div
         onClick={() => {
           props.setConfirmRidePanel(true);
+          props.selectVehicle("auto");
         }}
         className="flex w-full p-3 items-center mb-2 border-2 hover:border-black  border-gray-500 rounded-xl justify-between"
       >
@@ -88,7 +93,7 @@ export const VehiclePanel = (props ,idx) => {
             Afforable, Auto Rides
           </p>
         </div>
-        <h2 className="text-lg font-semibold">115.18</h2>
+        <h2 className="text-lg font-semibold">₹{props.fare.auto}</h2>
       </div>
     </div>
   );

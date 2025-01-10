@@ -95,23 +95,20 @@
 //   );
 // };
 
-import React, { createContext, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CaptainDataContext } from "../context/CaptainContext";
+
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState("");
-
-  const { captain, setCaptain } = React.useContext(CaptainDataContext);
+  const [error, setError] = useState("");
+  const { captain, setCaptain } = useContext(CaptainDataContext);
   const navigate = useNavigate();
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    // setUserData({
-    //   email: email,
-    //   password: password,
-    // });
     try {
       const newUser = {
         email: email,
@@ -128,7 +125,7 @@ const CaptainLogin = () => {
         navigate("/captainhome");
       }
     } catch (error) {
-      console.log("error frm captain login", error);
+      setError(error); //.response.data.message);
     }
     setEmail("");
     setPassword("");
@@ -170,6 +167,7 @@ const CaptainLogin = () => {
             className="bg-gray-100 rounded-lg px-4 py-3 border w-full text-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
             placeholder="password"
           />
+          {error && <p className="text-red-600 text-sm">{error}</p>}
           <button className="bg-black text-white font-semibold py-3 rounded-lg w-full text-lg hover:bg-gray-800 transition-colors">
             Login
           </button>

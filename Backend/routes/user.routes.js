@@ -5,6 +5,7 @@ import {
   loginUser,
   getUserProfile,
   logoutUser,
+  getUserProfileAll,
 } from "../controller/user.controller.js";
 import { authUser } from "../middleware/user.auth.middleware.js";
 const router = express.Router();
@@ -49,5 +50,6 @@ router.post(
 );
 
 router.get("/profile", authUser, getUserProfile);
+router.get("/profileall", getUserProfileAll);
 router.get("/logout", authUser, logoutUser,authUser);
 export default router;

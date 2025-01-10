@@ -6,6 +6,8 @@ import { BlacklistToken } from "../models/blacklistedToken.model.js";
 export const registerUser = async function (req, res, next) {
   try {
     const { fullname, email, password, mobile } = req.body;
+    console.log(req.body);
+
     const error = validationResult(req);
 
     if (!error.isEmpty()) {
@@ -28,6 +30,7 @@ export const registerUser = async function (req, res, next) {
 
 export const loginUser = async (req, res, next) => {
   try {
+    console.log(req.body);
     const error = validationResult(req);
     if (!error.isEmpty()) {
       return res.status(400).json({ errors: error });
@@ -51,6 +54,10 @@ export const loginUser = async (req, res, next) => {
 
 export const getUserProfile = async (req, res) => {
   res.status(200).json({ user: req.user });
+};
+export const getUserProfileAll = async (req, res) => {
+  const alluser = await userModel.find();
+  res.status(200).json({ alluser });
 };
 
 export const logoutUser = async (req, res) => {

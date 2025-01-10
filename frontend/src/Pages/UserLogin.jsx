@@ -5,40 +5,51 @@ import axios from "axios";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState("");
 
   const { user, setUser } = React.useContext(UserDataContext);
   const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
-    // setUserData({
-    //   email: email,
-    //   password: password,
-    // });
+    const newUser = {
+      email: email,
+      password: password,
+    };
+    const options = {
+      method: "POST",
+      url: "http://localhost:5000/user/login",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+      data: newUser,
+    };
     try {
-      const newUser = {
-        email: email,
-        password: password,
-      };
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/user/login`,
-        newUser
-      );
+      const response = await axios.request(options);
       if (response.status === 200) {
         const data = response.data;
         localStorage.setItem("token", data.token);
         setUser(data.user);
         navigate("/home");
+        setEmail("");
+        setPassword("");
       }
     } catch (error) {
-      console.log("error frm user login", error);
+      // alert("some err show in incept");
+      // console.error("Error Details:", {
+      //   message: error.message,
+      //   response: error.response,
+      //   request: error.request,
+      //   config: error.config,
+      // });
+      console.log("Message:", error.message);
+      console.log("Request:", error.request);
+      console.log("Response:", error.response ? error.response.data : "No response");
+      console.log("Config:", error.config);
     }
-    setEmail("");
-    setPassword("");
   };
 
   return (
-    <div className="p-5 h-screen flex flex-col justify-between bg-gray-50">
+    <div className='p-7 h-screen flex flex-col justify-between'>
       <div className="w-full max-w-md mx-auto">
         <form
           onSubmit={(e) => {
@@ -85,7 +96,7 @@ const UserLogin = () => {
 
       <div className="mt-6">
         <Link
-          to="/captain-login"
+          to="/captain-signin"
           // className="flex items-center justify-center bg-green-600 text-white font-semibold py-4 rounded-lg w-full max-w-md mx-auto text-lg hover:bg-green-700 transition-colors"
           className="flex items-center justify-center bg-[#d5622d] text-white font-semibold py-4 rounded-lg w-full max-w-md mx-auto text-lg hover:bg-green-700 transition-colors"
         >

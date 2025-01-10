@@ -1,32 +1,37 @@
-/* eslint-disable react/jsx-key */
 import React from "react";
 
-const LocationSearchPanel = (props) => {
-  // smaple array for location
-  const location = [
-    "G-22,23 Royal business hub , new katargam, variya, Surat.",
-    "G-24 PNB , new katargam, variya, Surat.",
-    "G-26 Varni raj , new katargam, variya, Surat.",
-  ];
+const LocationSearchPanel = ({
+  activeField,
+  setPanelOpen,
+  setVehiclePanel,
+  setPickUp,
+  setDestination,
+  suggestions,
+}) => {
+  const handleSuggestionClick = (suggestion) => {
+    if (activeField === "pickup") {
+      setPickUp(suggestion);
+    } else if (activeField === "destination") {
+      setDestination(suggestion);
+    }
+    // setVehiclePanel(true)
+    // setPanelOpen(false)
+  };
   return (
-    <div >
-      {/* // this is a sample data */}
-      {location.map(function (val,idx) {
-        return (
-          <div key={idx}
-            onClick={()=>{
-              props.setVehiclePanel(true);
-              props.setPanelOpen(false);
-            }}
-            className="flex gap-4 border-gray-100 active:border-black border-2 p-3 rounded-xl items-center my-4 justify-start"
-          >
-            <h2 className="bg-[#eee] md:text-2xl  w-12 flex items-center justify-center rounded-full">
-              <i className="ri-map-pin-2-fill "></i>
-            </h2>
-            <h4 className="p-3 font-medium md:text-2xl">{val}</h4>
-          </div>
-        );
-      })}
+    <div>
+      {/* Display fetched suggestions */}
+      {suggestions.map((elem, idx) => (
+        <div
+          key={idx}
+          onClick={() => handleSuggestionClick(elem)}
+          className="flex gap-4 border-2 p-3  border-gray-50 mt-10 active:border-black rounded-xl items-center my-2 justify-start"
+        >
+          <h2 className="bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full">
+            <i className="ri-map-pin-fill"></i>
+          </h2>
+          <h4 className="font-medium">{elem}</h4>
+        </div>
+      ))}
     </div>
   );
 };

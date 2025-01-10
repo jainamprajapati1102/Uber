@@ -6,21 +6,21 @@ const UserLogout = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  //   if (!token) {
-  //     return <div>You are not logged in</div>;
-  //   }
+    if (!token) {
+      return <div>You are not logged in</div>;
+    }
 
   const logoutHandler = async () => {
-    try {
-      await axios.get("http://localhost:5000/user/logout", {
-        headers: {
-          Authorization: ` Bearer ${token}`,
-        },
-      });
-      navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   await axios.get("http://localhost:5000/user/logout", {
+    //     headers: {
+    //       Authorization: ` Bearer ${token}`,
+    //     },
+    //   });
+    //   navigate("/login");
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
   return (
     <button

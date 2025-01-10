@@ -34,9 +34,9 @@ const captainSchema = mongoose.Schema({
       required: true,
       minlength: [1, "Capacity must be at least 1"],
     },
-    vehicleType: {
+    vehicletype: {
       type: String,
-      enum: ["car", "auto", "motorcycle"],
+      enum: ["car", "auto", "moto"],
       required: true,
     },
   },

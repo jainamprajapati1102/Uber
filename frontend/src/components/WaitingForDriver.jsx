@@ -25,7 +25,7 @@ export const WaitingForDriver = (props) => {
               <h4 className="text-xl font-semibold -mt-1 -mb-1">
                 {props.ride?.captain?.vehicle?.plate}
               </h4>
-              <p className="text-lg  text-gray-600">{props.ride?.otp} </p>
+              <p className="text-lg font-semibold text-gray-600">{props.ride?.otp} </p>
             </div>
           </div>
           <div>

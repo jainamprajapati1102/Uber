@@ -275,12 +275,11 @@ const Home = () => {
           onClick={() => setVehiclePanel(false)}
           className="h-screen w-screen"
         >
-          {/* <img
+          <img
             src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
             alt=""
             className="w-full h-full object-cover"
-          /> */}
-          <LiveTracking />
+          />
         </div>
         <div className=" mb-6 flex flex-col justify-end h-screen absolute top-0 w-full">
           <div className="h-49 p-6 w-screen  bg-white relative">

@@ -94,6 +94,8 @@ export const getCoordinatesService = async (address) => {
     const response = await axios.get(url);
     if (response.data.status === "OK") {
       const location = response.data.results[0].geometry.location;
+      console.log("location frm maps service", location);
+
       return {
         ltd: location.lat,
         lng: location.lng,
@@ -139,8 +141,6 @@ export const getAutoCompleteSuggestions = async (input) => {
   if (!input) {
     throw new Error("query is required");
   }
-  // console.log(input);
-
   const apiKey = process.env.GOOGLE_MAPS_API;
   const url = `https://maps.gomaps.pro/maps/api/place/autocomplete/json?input=${encodeURIComponent(
     input
@@ -163,14 +163,19 @@ export const getAutoCompleteSuggestions = async (input) => {
 
 export const getCaptainsInTheRadius = async (ltd, lng, radius) => {
   // radius in km
-
-  const captains = await captainModel.find({
-    location: {
-      $geoWithin: {
-        $centerSphere: [[ltd, lng], radius / 6371],
+  try {
+    const captains = await captainModel.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [[ltd, lng], radius / 6371],
+        },
       },
-    },
-  });
+    });
+    console.log("count of captains frm maps service", captains);
 
-  return captains;
+    return captains;
+  } catch (error) {
+    console.log("err frm get captains radius catch", error);
+    throw error;
+  }
 };

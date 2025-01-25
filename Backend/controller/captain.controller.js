@@ -7,7 +7,10 @@ export const registerCaptain = async function (req, res) {
   try {
     const errors = validationResult(req);
     const { fullname, email, password, vehicle } = req.body;
+    console.log(req.body);
+
     if (!errors.isEmpty()) {
+      console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -20,7 +23,7 @@ export const registerCaptain = async function (req, res) {
       color: vehicle.color,
       plate: vehicle.plate,
       capacity: vehicle.capacity,
-      vehicleType: vehicle.vehicleType,
+      vehicletype: vehicle.vehicletype,
     });
     const token = await captain.generateAuthToken();
     res.status(201).json({ token, captain });
@@ -41,9 +44,9 @@ export const loginCaptain = async function (req, res) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = await captain.generateAuthToken();
-    // res.cookie("cap_token", token);
-    res.status(200).json({ token, captain, message: "you are logedin" });
+    res.status(200).json({ token, captain });
   } catch (error) {
+    console.log(error);
     res.json(error.message);
   }
 };

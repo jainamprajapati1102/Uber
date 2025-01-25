@@ -15,11 +15,11 @@ const CaptainSingUp = () => {
   const [capacity, setCapacity] = useState("");
   const [vehicletype, setVehicletype] = useState("");
 
-  const vehicleTypes = [
-    { value: "car", label: "Car" },
-    { value: "auto", label: "Auto" },
-    { value: "motorcycle", label: "Motorcycle" },
-  ];
+  // const vehicleTypes = [
+  //   { value: "car", label: "Car" },
+  //   { value: "auto", label: "Auto" },
+  //   { value: "motorcycle", label: "Motorcycle" },
+  // ];
 
   const [selectedValue, setSelectedValue] = useState("");
   // const [vehicletype, setVehicletype] = useState("");
@@ -41,7 +41,7 @@ const CaptainSingUp = () => {
         color: color,
         plate: plate,
         capacity: capacity,
-        vehicleType: vehicletype,
+        vehicletype: vehicletype,
       },
     };
     // console.log(newCap);
@@ -54,8 +54,12 @@ const CaptainSingUp = () => {
 
       if (response.status === 201) {
         const data = response.data;
+        console.log("frm cap signup", data);
+
         localStorage.setItem("token", data.token);
         setCaptain(data.captain);
+        console.log(captain);
+        localStorage.setItem("capCon", JSON.stringify(captain));
         navigate("/captainhome");
       } else {
         alert("somthing wrong");
@@ -71,6 +75,13 @@ const CaptainSingUp = () => {
       setVehicletype("");
     } catch (error) {
       console.log("error frm captain singup", error);
+      if (error.response) {
+        console.error("Server error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error in setting up the request:", error.message);
+      }
     }
   };
   return (
@@ -193,7 +204,7 @@ const CaptainSingUp = () => {
                 </option>
                 <option value="car">Car</option>
                 <option value="auto">Auto</option>
-                <option value="motorcycle">MotorCycle</option>
+                <option value="moto">MotorCycle</option>
               </select>
             </div>
             <div>

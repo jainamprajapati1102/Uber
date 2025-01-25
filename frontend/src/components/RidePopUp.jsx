@@ -136,31 +136,36 @@ const RidePopUp = (props) => {
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMdEEKiFyk8PQ1hL0yknDqacV7SaniWHDb-w&s"
             className="w-10 rounded-full object-cover h-10"
           />
-          <h4 className="text-lg font-medium"> John Patel</h4>
+          <h4 className="text-lg font-medium">
+            {" "}
+            {props.ride?.user?.fullname?.firstname +
+              " " +
+              props.ride?.user?.fullname?.lastname}
+          </h4>
         </div>
-        <h5 className="text-lg font-semibold">2.2 KM</h5>
+        <h5 className="text-lg font-semibold">{props.ride?.distance} KM</h5>
       </div>
       <div className="flex gap-2 justify-between flex-col items-center">
         <div className="w-full mt-5">
           <div className="flex items-center gap-5 p-3 border-b-2">
             <i className="ri-map-pin-user-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">563/11-A</h3>
-              <p className="text-sm text-gray-600">Kakariya, Ahemdabad</p>
+              <h3 className="text-lg font-medium">{props.ride?.pickup}</h3>
+              <p className="text-sm text-gray-600"></p>
             </div>
           </div>
           <div className="flex items-center gap-5 p-3 border-b-2">
             <i className="ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">563/11-A</h3>
-              <p className="text-sm text-gray-600">Kakariya, Ahemdabad</p>
+              <h3 className="text-lg font-medium">{props.ride?.destination}</h3>
+              <p className="text-sm text-gray-600"></p>
             </div>
           </div>
           <div className="mt-2">
             <div className="flex items-center gap-5 p-3">
               <i className="text-lg ri-money-rupee-circle-fill"></i>
               <div>
-                <h3 className="text-lg font-medium">₹ 193.20</h3>
+                <h3 className="text-lg font-medium">₹ {props.ride?.fare}</h3>
                 <p className="text-sm text-gray-600">Cash cash</p>
               </div>
             </div>
@@ -179,6 +184,7 @@ const RidePopUp = (props) => {
             onClick={() => {
               props.setConfirmRidePopUpPanel(true);
               props.setRidePopUpPanel(false);
+              props.confirmRide();
             }}
             className="w-full bg-green-600 p-3 rounded-lg font-semibold px-10 text-white"
           >

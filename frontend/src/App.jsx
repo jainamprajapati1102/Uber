@@ -8,7 +8,7 @@ import CaptainSingUp from "./Pages/CaptainSingUp";
 import Home from "./Pages/Home";
 import UserContext from "./context/UserContext";
 import UserProtectWrapper from "./Pages/UserProtectWrapper";
-import { CaptainContext } from "./context/CaptainContext";
+import CaptainContext from "./context/CaptainContext";
 import UserLogout from "./Pages/UserLogout";
 import CaptainHome from "./Pages/CaptainHome";
 import CaptainProtectWrapper from "./Pages/CaptainProtectWrapper";
@@ -32,25 +32,23 @@ const App = () => {
             <Route
               path="/home"
               element={
-                // <UserProtectWrapper>
-                <Home />
-                // </UserProtectWrapper>
+                <UserProtectWrapper>
+                  <Home />
+                </UserProtectWrapper>
               }
             />
             <Route
               path="/captainhome"
               element={
-                // <CaptainProtectWrapper>
-                <CaptainHome />
-                // </CaptainProtectWrapper>
+                <CaptainProtectWrapper>
+                  <CaptainHome />
+                </CaptainProtectWrapper>
               }
             />
             <Route
               path="/user/logout"
               element={
-                // <UserProtectWrapper>{
-                <UserLogout />
-                // }</UserProtectWrapper>
+                <UserProtectWrapper>{<UserLogout />}</UserProtectWrapper>
               }
             />
           </Routes>

@@ -1,7 +1,6 @@
 import React from "react";
 
 export const ConfirmRide = (props) => {
-  console.log(props.fare); //[props.vehicletype]);
 
   return (
     <div>
@@ -24,14 +23,14 @@ export const ConfirmRide = (props) => {
             <i className=" ri-map-pin-user-fill"></i>
             <div>
               <h3 className="text-lg font-medium">{props.pickup}</h3>
-              <p className="text-sm text-gray-600">Kakariya,Ahemdabad</p>
+              {/* <p className="text-sm text-gray-600">Kakariya,Ahemdabad</p> */}
             </div>
           </div>
           <div className="flex items-center gap-5 p-3 border-b-2 ">
             <i className=" ri-map-pin-2-fill"></i>
             <div>
               <h3 className="text-lg font-medium">{props.destination}</h3>
-              <p className="text-sm text-gray-600">Kakariya,Ahemdabad</p>
+              {/* <p className="text-sm text-gray-600">Kakariya,Ahemdabad</p> */}
             </div>
           </div>
           <div className="mt-2">

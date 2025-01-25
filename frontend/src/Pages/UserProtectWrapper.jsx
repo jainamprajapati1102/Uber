@@ -58,21 +58,25 @@ const UserProtectWrapper = ({ children }) => {
         return;
       }
 
-      // try {
-      //   const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/profile`, {
-      //     headers: { Authorization: `Bearer ${token}` },
-      //   });
-
-      //   if (response.status === 200) {
-      //     setUser(response.data.user);
-      //   }
-      // } catch (err) {
-      //   console.error("Error fetching user profile", err);
-      //   localStorage.removeItem("token");
-      //   navigate("/login"); // Redirect to login page if user profile fetch fails
-      // } finally {
-      //   setIsLoading(false);
-      // }
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/user/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (response.status === 200) {
+          setUser(response.data.user);
+        } else {
+          navigate("/login"); // Redirect to login page if user profile fetch fails
+        }
+      } catch (err) {
+        console.error("Error fetching user profile", err);
+        localStorage.removeItem("token");
+        navigate("/login"); // Redirect to login page if user profile fetch fails
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchUserProfile();

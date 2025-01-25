@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
@@ -8,7 +8,10 @@ import { ConfirmRide } from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import { WaitingForDriver } from "../components/WaitingForDriver";
 import axios from "axios";
-
+import { SocketContext } from "../context/SocketContext";
+import { UserDataContext } from "../context/UserContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 const Home = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -17,6 +20,9 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [disTime, setDisTime] = useState([]);
+
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
 
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
@@ -30,8 +36,39 @@ const Home = () => {
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
   const [waitingForDriverPanel, setWaitingForDriverPanel] = useState(false);
-  // const [vehicletype, setSelectVehicle] = useState(null);
   const [vehicletype, setVehicletype] = useState(null);
+  const [ride, setRide] = useState("");
+
+  useEffect(() => {
+    socket.emit("join", { userType: "user", userid: user._id });
+
+    return () => {};
+  }, [user]);
+  // console.log(socket.id);
+
+  // socket.on("ride-confirmed", (ride) => {
+  //   console.log("confirm ride->", ride);
+  //   // setVehicleFound(false);
+  //   // setWaitingForDriverPanel(true);
+  //   // setRide(ride);
+  // });
+  const navigate = useNavigate();
+  socket.on("ride-started", (ride) => {
+    setWaitingForDriverPanel(false);
+    navigate("/riding", { state: { ride: ride } });
+  });
+  try {
+    const rideConfirmedHandler = (ride) => {
+      console.log("confirm ride->", ride);
+      setVehicleFound(false);
+      setWaitingForDriverPanel(true);
+      setRide(ride);
+    };
+    socket.on("ride-confirmed", rideConfirmedHandler);
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(waitingForDriverPanel);
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -121,6 +158,7 @@ const Home = () => {
 
   const handlePickUpChange = async (e) => {
     setPickup(e.target.value);
+    if (pickup === "") return;
     try {
       const response = await axios.get(
         `http://localhost:5000/maps/get-suggestion`,
@@ -135,7 +173,7 @@ const Home = () => {
       );
       setPickUpSuggestion(response.data);
     } catch (error) {
-      console.error("Error during request:", error);
+      // console.error("Error during request:", error);
       if (error.response) {
         console.error("Server error:", error.response.data);
       } else if (error.request) {
@@ -149,6 +187,7 @@ const Home = () => {
   const handleDestinationChange = async (e) => {
     setDestination(e.target.value);
     try {
+      if (destination === "") return;
       const response = await axios.get(
         `http://localhost:5000/maps/get-suggestion`,
         {
@@ -184,7 +223,6 @@ const Home = () => {
         timeout: 20000,
       });
       setFare(response1.data);
-      console.log(fare);
       setVehiclePanel(true);
       setPanelOpen(false);
     } catch (error) {
@@ -209,8 +247,6 @@ const Home = () => {
           timeout: 20000,
         }
       );
-
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -226,9 +262,10 @@ const Home = () => {
     });
     setDisTime(response1.data);
   }
+
   return (
     <>
-      <div className="h-screen relative">
+      <div className="h-screen relative overflow-hidden">
         <img
           className="w-16 absolute left-5 top-5"
           src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
@@ -238,11 +275,12 @@ const Home = () => {
           onClick={() => setVehiclePanel(false)}
           className="h-screen w-screen"
         >
-          <img
+          {/* <img
             src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
             alt=""
             className="w-full h-full object-cover"
-          />
+          /> */}
+          <LiveTracking />
         </div>
         <div className=" mb-6 flex flex-col justify-end h-screen absolute top-0 w-full">
           <div className="h-49 p-6 w-screen  bg-white relative">
@@ -281,7 +319,10 @@ const Home = () => {
             </form>
             {PanelOpen === true && (
               <button
-                onClick={findtrip}
+                onClick={() => {
+                  findtrip();
+                  setPanelOpen(false);
+                }}
                 className="bg-black text-white px-4 py-2 rounded-lg mt-4 w-full"
               >
                 Find Trip
@@ -334,7 +375,7 @@ const Home = () => {
 
         <div
           ref={vehicleFoundRef}
-          className="fixed z-10 px-3 py-8 translate-y-full bg-white w-full  bottom-0"
+          className="fixed z-10 px-3 py-16 translate-y-full bg-white w-full  bottom-0"
         >
           <LookingForDriver
             fare={fare}
@@ -350,7 +391,10 @@ const Home = () => {
           className="fixed z-10 px-3 py-8 translate-y-full bg-white w-full  bottom-0"
         >
           <WaitingForDriver
+            ride={ride}
+            setVehicleFound={setVehicleFound}
             setWaitingForDriverPanel={setWaitingForDriverPanel}
+            waitingForDriverPanel={waitingForDriverPanel}
           />
         </div>
       </div>

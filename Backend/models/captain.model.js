@@ -15,7 +15,7 @@ const captainSchema = mongoose.Schema({
   },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true, select: false },
-  soketId: { type: String },
+  socketId: { type: String },
   status: { type: String, enum: ["active", "inactive"], default: "inactive" },
   vehicle: {
     color: {
@@ -41,8 +41,8 @@ const captainSchema = mongoose.Schema({
     },
   },
   location: {
-    lat: { type: Number },
-    log: { type: Number },
+    ltd: { type: Number },
+    lng: { type: Number },
   },
 });
 

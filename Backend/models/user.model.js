@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: false },
   mobile: { type: Number },
-  soketId: { type: String },
+  socketId: { type: String },
 });
 
 userSchema.methods.generateAuthToken = async function () {

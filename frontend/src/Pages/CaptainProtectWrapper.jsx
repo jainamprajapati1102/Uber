@@ -98,24 +98,24 @@ const CaptainProtectWrapper = ({ children }) => {
         return;
       }
 
-      // try {
-      //   const response = await axios.get(
-      //     `${import.meta.env.VITE_BASE_URL}/captain/profile`,
-      //     {
-      //       headers: { Authorization: `Bearer ${token}` },
-      //     }
-      //   );
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/captain/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-      //   if (response.status === 200) {
-      //     setCaptain(response.data.captain);
-      //   }
-      // } catch (err) {
-      //   console.error("Error fetching captain profile", err);
-      //   localStorage.removeItem("token");
-      //   navigate("/captain-login"); // Redirect to login page if user profile fetch fails
-      // } finally {
-      //   setIsLoading(false);
-      // }
+        if (response.status === 200) {
+          setCaptain(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching captain profile", err);
+        localStorage.removeItem("token");
+        navigate("/captain-login"); // Redirect to login page if user profile fetch fails
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchCaptainProfile();

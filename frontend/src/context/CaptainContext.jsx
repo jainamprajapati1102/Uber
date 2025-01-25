@@ -1,55 +1,85 @@
+// // import React, { createContext, useContext, useState } from "react";
+
+// // export const CaptainDataContext = createContext();
+
+// // export const useCaptain = () => {
+// //   const context = useContext(CaptainContext);
+// //   if (!context) {
+// //     throw new Error("useCaptain must be used within a CaptainProvider");
+// //   }
+// //   return context;
+// // };
+
+// // /*************  ✨ Codeium Command 🌟  *************/
+// // export const CaptainContext = ({ children }) => {
+// //   const value = useContext(CaptainDataContext);
+// //   if (!value) {
+// //     throw new Error("useCaptainContext must be used within a CaptainProvider");
+// //   }
+// //   console.log("context cap", children);
+
+// //   const [captain, setCaptain] = useState(null);
+
+// //   const [isLoading, setIsLoading] = useState(null);
+// //   const [error, setError] = useState(null);
+
+// //   const CaptainContext = (captainData) => {
+// //     setCaptain(captainData);
+// //   };
+// //   console.log(captain);
+
+// //   const value = {
+// //     captain,
+// //     isLoading,
+// //     error,
+// //     CaptainContext,
+// //   };
+
+// //   return (
+// //     <CaptainDataContext.Provider value={value}>
+// //       {children}
+// //     </CaptainDataContext.Provider>
+// //   );
+// // };
+// // /******  bd6bb3fe-44ce-490d-8b0e-e07884b0f129  *******/
+
 // import React, { createContext, useContext, useState } from "react";
 
 // export const CaptainDataContext = createContext();
 
-// export const useCaptain = () => {
-//   const context = useContext(CaptainContext);
-//   if (!context) {
-//     throw new Error("useCaptain must be used within a CaptainProvider");
-//   }
-//   return context;
-// };
-
-// /*************  ✨ Codeium Command 🌟  *************/
 // export const CaptainContext = ({ children }) => {
-//   const value = useContext(CaptainDataContext);
-//   if (!value) {
-//     throw new Error("useCaptainContext must be used within a CaptainProvider");
-//   }
-//   console.log("context cap", children);
-
 //   const [captain, setCaptain] = useState(null);
-
 //   const [isLoading, setIsLoading] = useState(null);
 //   const [error, setError] = useState(null);
+//   // console.log(captain);
 
-//   const CaptainContext = (captainData) => {
+//   const updateCaptain = (captainData) => {
+//     console.log("cap data", captainData);
+
 //     setCaptain(captainData);
 //   };
-//   console.log(captain);
 
 //   const value = {
 //     captain,
 //     isLoading,
 //     error,
-//     CaptainContext,
+//     updateCaptain,
 //   };
 
 //   return (
-//     <CaptainDataContext.Provider value={value}>
+//     <CaptainDataContext.Provider value={{ captain, setCaptain }}>
 //       {children}
 //     </CaptainDataContext.Provider>
 //   );
 // };
-// /******  bd6bb3fe-44ce-490d-8b0e-e07884b0f129  *******/
 
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
 export const CaptainDataContext = createContext();
 
-export const CaptainContext = ({ children }) => {
+const CaptainContext = ({ children }) => {
   const [captain, setCaptain] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const updateCaptain = (captainData) => {
@@ -58,14 +88,19 @@ export const CaptainContext = ({ children }) => {
 
   const value = {
     captain,
+    setCaptain,
     isLoading,
+    setIsLoading,
     error,
+    setError,
     updateCaptain,
   };
 
   return (
-    <CaptainDataContext.Provider value={{captain, setCaptain}}>
+    <CaptainDataContext.Provider value={value}>
       {children}
     </CaptainDataContext.Provider>
   );
 };
+
+export default CaptainContext;

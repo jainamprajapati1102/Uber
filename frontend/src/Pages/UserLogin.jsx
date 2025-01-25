@@ -27,6 +27,8 @@ const UserLogin = () => {
       const response = await axios.request(options);
       if (response.status === 200) {
         const data = response.data;
+        console.log(response);
+        
         localStorage.setItem("token", data.token);
         setUser(data.user);
         navigate("/home");
